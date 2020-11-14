@@ -1,1 +1,1 @@
-web: go run main.go Bees
+web: bin/orbweaver
