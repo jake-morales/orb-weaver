@@ -42,6 +42,7 @@ func getJSONbytes(topic string, maxPages int) ([]byte, error) {
 }
 
 func checkCache(s string) ([]byte, error) {
+	// integrate with aws S3 in the future
 	js, err := ioutil.ReadFile(s)
 	if err != nil {
 		return js, fmt.Errorf("Cache miss: %s", err)

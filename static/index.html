@@ -3,9 +3,40 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Orb-weaver | Wiki Crawler</title>
 </head>
 <body>
-	<h1>Wassup</h1>
+	<h1 >Orb-weaver</h1>
+	<h4>The Wikipedia Crawler</h4>
+	<img height="200px" src="orb-weaver.png" alt="Orb-weaver from Grounded"/>
+	<p>
+		<form id="search">
+			<label for="query">Enter a wikipedia topic:</label>
+			<input type="text" id="query" name="query" placeholder="Spiders">
+			<button type="submit">Search</button>
+		</form>
+	</p>
+	<div id="tree"></div>
 </body>
+<style>
+	body {
+		text-align: center;
+	}
+</style>
+<script>
+	// override form submit
+	document.getElementById("search").addEventListener("submit", handleSubmit)
+
+	// handle form submit
+	function handleSubmit (event) {
+		event.preventDefault()
+		topic = event.target[0].value
+		fetch(`/query?topic=${topic}&pages=3`)
+		.then((resp) => resp.json())
+		.then((data) => {
+			console.log(data)
+			document.getElementById("tree").textContent = JSON.stringify(data)
+		})
+	}
+</script>
 </html>
