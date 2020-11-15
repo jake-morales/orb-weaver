@@ -84,17 +84,20 @@ func crawl(topic string, maxPages int) ([]byte, error) {
 
 	// create our file to write the json to
 	w, err := os.Create(fmt.Sprintf("./static/cache/%s-%d.json", topic, maxPages))
+	if err != nil {
+		return []byte{}, fmt.Errorf("Error creating new json file %s", err)
+	}
 	defer w.Close()
 
 	// serialize the JSON to our io.Writer stream
 	err = json.NewEncoder(w).Encode(root)
 	if err != nil {
-		return []byte{}, fmt.Errorf("Error encoding")
+		return []byte{}, fmt.Errorf("Error encoding, %s", err)
 	}
 
 	b, _ := json.Marshal(root)
 	if err != nil {
-		return []byte{}, fmt.Errorf("Error marshalling")
+		return []byte{}, fmt.Errorf("Error marshalling: %s", err)
 	}
 	return b, nil
 
