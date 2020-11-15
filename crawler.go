@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"os"
 	"strings"
@@ -51,7 +50,7 @@ func getJSONbytes(topic string, maxPages int) ([]byte, error) {
 func checkCache(s string) ([]byte, error) {
 	js, err := ioutil.ReadFile(s)
 	if err != nil {
-		return js, errors.New("Cache miss")
+		return js, fmt.Errorf("Cache miss: %s", err)
 	}
 
 	return js, nil
@@ -90,12 +89,12 @@ func crawl(topic string, maxPages int) ([]byte, error) {
 	// serialize the JSON to our io.Writer stream
 	err = json.NewEncoder(w).Encode(root)
 	if err != nil {
-		log.Fatal(err)
+		return []byte{}, fmt.Errorf("Error encoding")
 	}
 
 	b, _ := json.Marshal(root)
 	if err != nil {
-		log.Fatal(err)
+		return []byte{}, fmt.Errorf("Error marshalling")
 	}
 	return b, nil
 
