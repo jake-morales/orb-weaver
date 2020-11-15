@@ -35,7 +35,7 @@ func getJSONbytes(topic string, maxPages int) ([]byte, error) {
 
 	js, err = crawl(topic, maxPages)
 	if err != nil {
-		return js, errors.New("Crawl failed")
+		return js, fmt.Errorf("Crawl failed: %s", err)
 	}
 
 	return js, nil
