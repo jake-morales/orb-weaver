@@ -12,18 +12,12 @@ import (
 	"golang.org/x/net/html"
 )
 
-// Node is for the treeeeees
-type Node struct {
-	Value    string  `json:"val"`
-	Children []*Node `json:"children"`
-}
-
 func getJSONbytes(topic string, maxPages int) ([]byte, error) {
 	var js []byte
 	var err error
 	topic = strings.ToLower(topic)
 
-	// Check our cache first
+	// Check the cache first
 	js, err = checkCache(fmt.Sprintf("./static/cache/%s-%d.json", topic, maxPages))
 	if err == nil {
 		fmt.Println("Cache worked!")
@@ -54,6 +48,12 @@ func checkCache(s string) ([]byte, error) {
 	}
 
 	return js, nil
+}
+
+// Node is for the treeeeees
+type Node struct {
+	Value    string  `json:"val"`
+	Children []*Node `json:"children"`
 }
 
 func crawl(topic string, maxPages int) ([]byte, error) {

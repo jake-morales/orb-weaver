@@ -64,7 +64,7 @@ func queryHandler(w http.ResponseWriter, r *http.Request) {
 
 	js, err := getJSONbytes(topic, maxPages)
 	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+		http.Error(w, err.Error(), http.StatusNotFound)
 	}
 
 	w.Header().Set("Content-Type", "application/json")
