@@ -15,10 +15,9 @@ import (
 func getJSONbytes(topic string, maxPages int) ([]byte, error) {
 	var js []byte
 	var err error
-	topic = strings.ToLower(topic)
 
 	// Check the cache first
-	js, err = checkCache(fmt.Sprintf("./static/cache/%s-%d.json", topic, maxPages))
+	js, err = checkCache(fmt.Sprintf("./static/cache/%s-%d.json", strings.ToLower(topic), maxPages))
 	if err == nil {
 		fmt.Println("Cache worked!")
 		return js, nil
@@ -84,7 +83,7 @@ func crawl(topic string, maxPages int) ([]byte, error) {
 	}
 
 	// create our file to write the json to
-	w, err := os.Create(fmt.Sprintf("./static/cache/%s-%d.json", topic, maxPages))
+	w, err := os.Create(fmt.Sprintf("./static/cache/%s-%d.json", strings.ToLower(topic), maxPages)) // to save memory, remove case sensitivity
 	if err != nil {
 		return []byte{}, fmt.Errorf("Error creating new json file %s", err)
 	}
