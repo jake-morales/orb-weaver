@@ -6,22 +6,29 @@
 	<title>Orb-weaver | Wiki Crawler</title>
 </head>
 <body>
-	<h1 >Orb-weaver</h1>
-	<h4>The Wikipedia Crawler</h4>
-	<img height="200px" src="orb-weaver.png" alt="Orb-weaver from Grounded"/>
-	<p>
-		<form id="search">
-			<label for="query">Enter a wikipedia topic:</label>
-			<input type="text" id="query" name="query" placeholder="Spiders">
-			<button type="submit">Search</button>
-		</form>
-	</p>
+	<div class="centered">
+		<h1 >Orb-weaver</h1>
+		<h4>The Wikipedia Crawler</h4>
+		<img height="200px" src="orb-weaver.png" alt="Orb-weaver from Grounded"/>
+		<p>
+			<form id="search">
+				<label for="query">Enter a wikipedia topic:</label>
+				<input type="text" id="query" name="query" placeholder="Spiders">
+				<button type="submit">Search</button>
+			</form>
+		</p>
+	</div>
 	<div id="tree"></div>
 </body>
 <style>
-	body {
+	.centered {
 		text-align: center;
 	}
+
+	ul {
+		list-style-type: none;
+	}
+
 </style>
 <script>
 	// override form submit
@@ -31,12 +38,22 @@
 	function handleSubmit (event) {
 		event.preventDefault()
 		topic = event.target[0].value
-		fetch(`/query?topic=${topic}&pages=3`)
+		fetch(`/query?topic=${topic}&pages=5`)
 		.then((resp) => resp.json())
 		.then((data) => {
+			div = document.getElementById("tree")
 			console.log(data)
-			document.getElementById("tree").textContent = JSON.stringify(data)
+			div.innerHTML = "<ul>" + renderTree(data) + "</ul>"
 		})
 	}
+
+	function renderTree(j) {
+		if (j.children === null) { // leaf
+			return `<li><a href="https://wikipedia.org/wiki/${j.val}" target="_blank">${j.val}</a></li>`
+		}
+		s = j.children.map(c => renderTree(c)).join("");
+		return `<li><a href="https://wikipedia.org/wiki/${j.val}" target="_blank">${j.val}</a><ul>${s}</ul></li>`
+	}
+
 </script>
 </html>
